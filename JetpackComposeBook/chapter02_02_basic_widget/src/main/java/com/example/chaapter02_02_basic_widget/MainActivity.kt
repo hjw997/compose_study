@@ -2,6 +2,7 @@ package com.example.chaapter02_02_basic_widget
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.CheckBox
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -39,6 +40,8 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
@@ -92,12 +95,33 @@ class MainActivity : ComponentActivity() {
                     //ButtonSample01()
                     //ButtonSample02()
                     //IconButtonSample()
-                    FloatButtonSample()
+                    //FloatButtonSample()
+                    CheckBoxSample()
 
                 }
             }
         }
     }
+}
+
+/**
+ * CheckBox 演练：
+ *
+ */
+@Composable
+fun CheckBoxSample() {
+    var checkState by remember {
+        mutableStateOf(true)
+    }
+    Checkbox(
+        checked = checkState,
+        onCheckedChange = {
+            checkState = it
+        },
+        colors = CheckboxDefaults.colors(
+            checkedColor = Color(0xFF0079D3)
+        )
+    )
 }
 
 /**
