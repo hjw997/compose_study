@@ -21,4 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "JetpackComposeBook"
 include(":app")
-include(":chapter02_modifier")
+include(":chapter02_01_modifier")
+include(":chapter02_02_basic_widget")

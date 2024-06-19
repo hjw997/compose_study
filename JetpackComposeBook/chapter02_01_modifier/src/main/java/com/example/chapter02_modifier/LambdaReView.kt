@@ -6,24 +6,28 @@ package com.example.chapter02_modifier
  */
 fun main() {
     val list = listOf<String>("apple","banana","pear","grape")
-    val lambda = {friut:String -> friut.length}
+    /// lambda 申明
+    val lambda = {fruit:String -> fruit.length }
+
     list.maxBy(lambda)
     list.maxBy {
         it.length
     }
 
     //简化: 直接将lambda传入进去: 整体作为一个参数
-    list.maxBy({friut:String -> friut.length})
+    list.maxBy({fruit:String -> fruit.length})// ⚠️:  Lambda argument should be moved out of parentheses
 
     //Kotlin 规定：如果lambda 是函数唯一的一个参数 最后一个参数的时候,可以将lambda表达式移动到函数括号外。
-    list.maxBy(){friut:String -> friut.length}
+    list.maxBy(){fruit:String -> fruit.length}
 
     //如果lambda参数是函数的唯一一个参数的,并且lambda放到函数括号外,还可以将函数的括号省略.
-    list.maxBy{friut:String -> friut.length}
+    list.maxBy{ fruit:String ->
+        fruit.length
+    }
 
     //进一步简化:由于kotlin拥有出色的类型推导机制,lambda 表达式中的参数列表其实大多数情况下不必声明参数类型
     //所以进一步简化为:
-    list.maxBy {friut -> friut.length}
+    list.maxBy {fruits -> fruits.length}
 
     //最后:当lambda表达式的参数列表中只有一个参数的时候,（ { 参数名1: 参数类型 , 参数名2: 参数类型 -> 函数体 }）也不必申明参数名,而是可以使用
     //it 单个参数的隐式名称 来替代.所以可以进一步简化为如下:
