@@ -50,6 +50,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TriStateCheckbox
@@ -99,11 +101,34 @@ class MainActivity : ComponentActivity() {
                     //IconButtonSample()
                     //FloatButtonSample()
                     //CheckBoxSample()
-                    TriStateCheckboxSample()
+                    //TriStateCheckboxSample()
+                    SwitchSample()
 
                 }
             }
         }
+    }
+}
+
+/**
+ * Switch 单选开关
+ * 图解 ： thumb 和 track
+ * https://alexzh.com/jetpack-compose-switch/
+ */
+@Composable
+fun SwitchSample() {
+    var checkState by remember {
+        mutableStateOf(true)
+    }
+    Column {
+        Switch(
+            checked = checkState,
+            onCheckedChange = {
+                checkState = it
+            },
+            colors = SwitchDefaults.colors(checkedThumbColor = Color.Blue)
+        )
+
     }
 }
 
