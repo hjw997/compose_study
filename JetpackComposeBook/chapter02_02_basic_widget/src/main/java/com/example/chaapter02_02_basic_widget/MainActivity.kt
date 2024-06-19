@@ -33,6 +33,7 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -85,10 +86,33 @@ class MainActivity : ComponentActivity() {
                     //TextFieldDemo_02()
                     //BSiteSearchBar()
                     //ButtonSample01()
-                    ButtonSample02()
+                    //ButtonSample02()
+                    IconButtonSample()
 
                 }
             }
+        }
+    }
+}
+
+/**
+ * IconButton 组件实际上只是Button组件的简单封装（一个可点击的图标）
+ * 一般来说，我们需要在IconButton组件里提供一个图标组件，这个图标的默认的大小一般为 24 x 24 dp.
+ */
+@Composable
+fun IconButtonSample() {
+    var collection by remember {
+        mutableStateOf(false)
+    }
+    Column {
+        IconButton(onClick = {
+            collection = !collection
+        }) {
+            Icon(
+                imageVector = Icons.Filled.Favorite,
+                contentDescription = "favorite",
+                tint = if (collection) Color.Red else Color.Gray
+            )
         }
     }
 }
@@ -105,7 +129,7 @@ class MainActivity : ComponentActivity() {
  */
 @Composable
 fun ButtonSample02() {
-    val interaction  = remember {
+    val interaction = remember {
         MutableInteractionSource()
     }
     val pressState = interaction.collectIsPressedAsState() //判断按钮是否按下
