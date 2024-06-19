@@ -1,0 +1,30 @@
+pluginManagement {
+    repositories {
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "ComposeTest"
+include ':01_compose_sampleWidget'
+include ':02_compose_lazy_layout'
+include ':03_compose_lazy_layout'
+
+include ':04_compose_nestscroll'
+include ':05_compose_nestscrollvertical'
+include ':06_compose_header_footer'
+include ':07_compose_derivedstateof'
