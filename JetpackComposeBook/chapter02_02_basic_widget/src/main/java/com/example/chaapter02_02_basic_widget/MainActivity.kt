@@ -52,6 +52,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TriStateCheckbox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -64,6 +65,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ModifierInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -96,12 +98,57 @@ class MainActivity : ComponentActivity() {
                     //ButtonSample02()
                     //IconButtonSample()
                     //FloatButtonSample()
-                    CheckBoxSample()
+                    //CheckBoxSample()
+                    TriStateCheckboxSample()
 
                 }
             }
         }
     }
+}
+
+/**
+ * TriStateCheckbox 三态选择器：
+ * ⚠️：复习下Kotlin 解构
+ */
+@Composable
+fun TriStateCheckboxSample() {
+    // 为两个CheckBox 定义状态。
+    val (state1, onStateChange1) = remember {
+        mutableStateOf(true)
+    }
+    val (state2,onStateChange2) = remember {
+        mutableStateOf(true)
+    }
+
+    /// 根据CheckBox的状态来来设置 TriStateCheckBox的状态。
+    val parentState = remember(state1,state2){
+        if (state1 && state2) ToggleableState.On
+        else if( !state1 && !state2) ToggleableState.Off
+        else ToggleableState.Indeterminate
+    }
+    // TriStateCheckBox 可以为从属的复选框设置状态
+    val onParentClick = {
+        val s = parentState != ToggleableState.On
+        onStateChange2(s)
+        onStateChange1(s)
+    }
+    Column {
+
+        TriStateCheckbox(
+            state = parentState,
+            onClick = onParentClick,
+            colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colorScheme.primary)
+        )
+
+        Column(Modifier.padding(10.dp,0.dp,0.dp,0.dp)) {
+            Checkbox(checked = state1, onCheckedChange = onStateChange1)
+            Checkbox(checked = state2, onCheckedChange = onStateChange2)
+        }
+    }
+
+
+
 }
 
 /**
