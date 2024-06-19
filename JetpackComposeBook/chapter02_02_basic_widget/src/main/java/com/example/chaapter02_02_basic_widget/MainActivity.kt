@@ -8,6 +8,10 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsDraggedAsState
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,9 +29,13 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -75,11 +83,69 @@ class MainActivity : ComponentActivity() {
                 ) {
                     //TextDemo01("Android")
                     //TextFieldDemo_02()
-                    BSiteSearchBar()
+                    //BSiteSearchBar()
+                    //ButtonSample01()
+                    ButtonSample02()
 
                 }
             }
         }
+    }
+}
+
+/**
+ * Button 的 interactionSource 相当于 Selector
+ * PS：Button 并非唯一可点击的组件，
+ * 理论上任何的Composable 组件都可以通过 Modifier.clickable修饰符化身为可点击组件
+ * 而Button 被点击后，需要额外进行一些事件相应处理，比如 Material Design 显示水波纹
+ * 这些都是其内部通过拦截 Modifier.clickable 事件实现处理。
+ * Modifier.clickable 已经被内部实现所占用。Button 需要提供单独的 onClick参数供开发和使用。
+ * ⚠️：Button 的 onClick 在底层是通过覆盖 Modifier.clickable 实现的，
+ *      所以不要为Button 设置Modifier.clickable,即使设置了，也会因为被onClick覆盖而没有任何效果。
+ */
+@Composable
+fun ButtonSample02() {
+    val interaction  = remember {
+        MutableInteractionSource()
+    }
+    val pressState = interaction.collectIsPressedAsState() //判断按钮是否按下
+    val borderColor = if (pressState.value) Color.Green else Color.White
+
+    ///还有其他的一些状态：
+    interaction.collectIsFocusedAsState() //判断是否获取焦点的状态
+    interaction.collectIsDraggedAsState() //判断是否是拖拽
+
+    Column {
+        Button(
+            onClick = { /*TODO*/ },
+            border = BorderStroke(2.dp, borderColor),
+            interactionSource = interaction,
+        ) {
+            Text(text = "长按试试")
+        }
+    }
+}
+
+@Composable
+fun ButtonSample01() {
+    Column {
+        /// 某一行： 代码向上移动 shift + opt + 上下箭头
+        /// 某个组件上下 移动 shift + cmd + 上下箭头。
+        Button(onClick = { /*TODO*/ }) {
+            Text(text = "确认")
+        }
+        Button(onClick = { /*TODO*/ }) {
+            //PS:Button 的 content 作用域是 RowScope 那么相当于这里面是个Row
+            Icon(
+                imageVector = Icons.Filled.Done,
+                contentDescription = "",
+                modifier = Modifier.size(ButtonDefaults.IconSize)
+            )
+            Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+            Text(text = "确认")
+        }
+
+
     }
 }
 
@@ -125,7 +191,10 @@ fun BSiteSearchBar() {
                     if (text.isNotEmpty()) {
                         IconButton(
                             onClick = { text = "" },
-                            modifier = Modifier.padding(end = 20.dp).size(16.dp).border(2.dp, color = Color.Red, shape = RectangleShape)
+                            modifier = Modifier
+                                .padding(end = 20.dp)
+                                .size(16.dp)
+                                .border(2.dp, color = Color.Red, shape = RectangleShape)
                         ) {
                             Image(
                                 imageVector = Icons.Filled.Clear,
