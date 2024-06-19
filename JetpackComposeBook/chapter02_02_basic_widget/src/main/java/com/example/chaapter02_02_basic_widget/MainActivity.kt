@@ -49,6 +49,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -102,13 +104,39 @@ class MainActivity : ComponentActivity() {
                     //FloatButtonSample()
                     //CheckBoxSample()
                     //TriStateCheckboxSample()
-                    SwitchSample()
+                    //SwitchSample()
+                    SliderSample()
 
                 }
             }
         }
     }
 }
+
+/**
+ * Slider 组件
+ */
+@Composable
+fun SliderSample() {
+
+    var sliderPostion by remember {
+        mutableStateOf(0f)
+    }
+
+    Column(Modifier.padding(horizontal = 30.dp)) {
+        Text(text = "%.1f".format(sliderPostion *100) + "%")
+        Slider(
+            value = sliderPostion,
+            onValueChange = {
+                sliderPostion = it
+            },
+            //steps = 10, //滑竿被平分成 steps + 1 段。 默认0 就是一段。分段后滑动时候不超过一段就退回到原来位置，超过了就下一段。
+            colors = SliderDefaults.colors() //可以对滑竿的颜色设置：滑竿小圆球，滑竿进度，滑竿底色等。
+        )
+    }
+
+}
+
 
 /**
  * Switch 单选开关
