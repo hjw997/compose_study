@@ -13,6 +13,7 @@ import androidx.compose.foundation.interaction.collectIsDraggedAsState
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -34,10 +35,13 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -87,11 +91,54 @@ class MainActivity : ComponentActivity() {
                     //BSiteSearchBar()
                     //ButtonSample01()
                     //ButtonSample02()
-                    IconButtonSample()
+                    //IconButtonSample()
+                    FloatButtonSample()
 
                 }
             }
         }
+    }
+}
+
+/**
+ * FloatButton
+ */
+@Composable
+fun FloatButtonSample() {
+    ///Box 就是帧布局：
+    Box {
+        FloatButton()
+        //代文字的扩展FAB
+        ExtendedFloatingActionButton(
+            onClick = { /*TODO*/ },
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(20.dp)
+        ) {
+            Icon(Icons.Filled.Favorite, contentDescription = null)
+            Spacer(modifier = Modifier.width(10.dp))
+            Text(text = "添加到我喜欢的")
+        }
+
+    }
+
+}
+
+/**
+ * PS 这里 扩展一个函数语法。给BoxScope 扩展。 作用域要在 BoxScope
+ * 这里做个语法练习而已。
+ */
+@Composable
+fun BoxScope.FloatButton() {
+
+    FloatingActionButton(
+        onClick = {
+
+        }, modifier = Modifier
+            .align(Alignment.BottomEnd)
+            .padding(10.dp)
+    ) {
+        Icon(Icons.Filled.KeyboardArrowUp, contentDescription = null)
     }
 }
 
