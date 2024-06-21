@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.CheckBox
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,6 +24,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -38,23 +40,29 @@ import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TriStateCheckbox
 import androidx.compose.runtime.Composable
@@ -83,6 +91,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.example.chaapter02_02_basic_widget.ui.theme.JetpackComposeBookTheme
 
 class MainActivity : ComponentActivity() {
@@ -105,13 +115,125 @@ class MainActivity : ComponentActivity() {
                     //CheckBoxSample()
                     //TriStateCheckboxSample()
                     //SwitchSample()
-                    SliderSample()
+
+                    // SliderSample()
+                    // DialogSample()
+                    //AlertDialogSample()
+                    ProgressSample()
 
                 }
             }
         }
     }
 }
+
+/**
+ * 进度条 Progress
+ * Compose 自带两种Material Design进度条
+ *
+ */
+@Composable
+fun ProgressSample() {
+    var progress by remember {
+        mutableStateOf(0.1f)
+    }
+    val animateProgress by animateFloatAsState(
+        targetValue = progress,
+        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+    )
+    Column(modifier = Modifier.padding(20.dp)) {
+        /// 圆形进度条指示器
+        CircularProgressIndicator(progress = animateProgress)
+        Spacer(modifier = Modifier.requiredHeight(30.dp))
+        OutlinedButton(onClick = {
+            if (progress < 1f) progress += 0.1f
+        }) {
+            Text(text = "点击增加进度")
+        }
+
+        //直线进度条--
+        LinearProgressIndicator(progress = animateProgress)
+    }
+}
+
+
+/**
+ * 警告框:AlertDialog
+ */
+
+@Composable
+fun AlertDialogSample() {
+    var openDialog by remember {
+        mutableStateOf(true)
+    }
+    if (openDialog) {
+        AlertDialog(onDismissRequest = {
+            openDialog = false
+        },
+            title = { Text(text = "开启位置服务") },
+            text = { Text(text = "这将意味着,我们会给您提供精准的位置服务,并且您将接受关于您订阅的位置信息") },
+            confirmButton = {
+                TextButton(onClick = {
+                    openDialog = false
+                    /// 其他需要执行的业务需求
+                }) {
+                    Text(text = "同意")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    openDialog = false
+
+                }) {
+                    Text(text = "取消")
+                }
+            })
+
+    }
+}
+
+
+/**
+ * 对话框:
+ * 对话框 显示 消失是需要 通过状态来控制的.
+ */
+@Composable
+fun DialogSample() {
+    val openDialog = remember {
+        mutableStateOf(true)
+    }
+    val dialogWidth = 200.dp
+    val dialogHeight = 50.dp
+
+    if (openDialog.value) {
+        Dialog(
+            onDismissRequest = {
+                openDialog.value = false
+            }, //当我们打算关闭对话框时执行的东西.
+
+            ///properties 参数定制一些对话框特有行为.
+            properties = DialogProperties(
+                usePlatformDefaultWidth = false,
+                dismissOnClickOutside = true
+            )
+        ) {
+            ///Dialog 的对话框 通过 content 参数来定制内容.
+//            Surface(modifier = Modifier
+//                .width(200.dp)
+//                .height(300.dp), color = Color.Gray) {
+//                Text(text = "Hello 对话框")
+//            }
+
+            Box(
+                modifier = Modifier
+                    .size(dialogWidth, dialogHeight)
+                    .background(Color.White)
+            )
+        }
+    }
+
+}
+
 
 /**
  * Slider 组件
