@@ -20,15 +20,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -68,12 +71,121 @@ class MainActivity : ComponentActivity() {
                     // BoxSample()
                     // SurfaceSample()
                     // SpacerSample()
-                    ConstraintSample()
+                    //ConstraintSample()
+                    InputFieldLayoutDemo()
                 }
             }
         }
     }
 }
+
+/**
+ * Barrier 分界线：
+ */
+@Composable
+fun BarrierSample() {
+    Box {
+        ConstraintLayout {
+            val (userNameTextRef, passwordTextRef, userNameInputRef, passwordInputRef, dividerRef) = remember {
+                createRefs()
+            }
+            var barrier = createEndBarrier(userNameTextRef, passwordTextRef)
+            Text(text = "用户名", textAlign = TextAlign.Center, modifier = Modifier
+                .constrainAs(userNameTextRef) {
+                    start.linkTo(parent.start, 10.dp)
+                    top.linkTo(parent.top, 10.dp)
+                    height = Dimension.value(40.dp)
+                }
+                .background(Color.Cyan))
+            OutlinedTextField(
+                value = "用户名",
+                onValueChange = {},
+                placeholder = { Text(text = "请输入用户名", color = Color.Blue)},
+                modifier = Modifier.constrainAs(passwordInputRef) {
+                    start.linkTo(barrier, 10.dp)
+                    top.linkTo(userNameTextRef.top)
+                    bottom.linkTo(userNameTextRef.bottom)
+                    height = Dimension.fillToConstraints
+                })
+
+        }
+    }
+}
+
+
+/**
+ * 课本Demo： https://blog.csdn.net/qq_61735602/category_11795115.html
+ * Barrier 分界线：---课本Demo：
+ * https://github.com/compose-museum/sample-app/blob/main/Chapter_02_BasicUI/Layout_%26_UI/ConstraintLayout.kt
+ */
+@Composable
+fun InputFieldLayoutDemo() {
+    Column {
+
+        ConstraintLayout(
+            modifier = Modifier
+                .width(400.dp)
+                .padding(10.dp)
+                .background(Color.Cyan)
+        ) {
+            val (usernameTextRef, passwordTextRef, usernameInputRef, passWordInputRef, dividerRef) = remember { createRefs() }
+            var barrier = createEndBarrier(usernameTextRef, passwordTextRef)
+            Box(modifier = Modifier.constrainAs(usernameTextRef) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    height = Dimension.value(40.dp)
+                }, contentAlignment = Alignment.CenterStart) {
+
+                Text(
+                    text = "用户名",
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Left,
+                    modifier = Modifier
+                        .background(Color.Green)
+                )
+            }
+            Divider(
+                Modifier
+                    .fillMaxWidth()
+                    .constrainAs(dividerRef) {
+                        top.linkTo(usernameTextRef.bottom)
+                        bottom.linkTo(passwordTextRef.top)
+                    })
+            Text(
+                text = "密码",
+                fontSize = 14.sp,
+                modifier = Modifier
+                    .constrainAs(passwordTextRef) {
+                        top.linkTo(usernameTextRef.bottom, 19.dp)
+                        start.linkTo(parent.start)
+                        height = Dimension.value(40.dp)
+                    }
+            )
+            OutlinedTextField(
+                value = "用户名",
+                onValueChange = {},
+                placeholder = { Text(text = "请输入用户名")},
+                modifier = Modifier.constrainAs(usernameInputRef) {
+                    start.linkTo(barrier, 10.dp)
+                    top.linkTo(usernameTextRef.top)
+                    bottom.linkTo(usernameTextRef.bottom)
+                    height = Dimension.fillToConstraints
+                }
+            )
+            OutlinedTextField(
+                value = "",
+                onValueChange = {},
+                modifier = Modifier.constrainAs(passWordInputRef) {
+                    start.linkTo(barrier, 10.dp)
+                    top.linkTo(passwordTextRef.top)
+                    bottom.linkTo(passwordTextRef.bottom)
+                    height = Dimension.fillToConstraints
+                }
+            )
+        }
+    }
+}
+
 
 /**
  * 约束布局:
@@ -135,7 +247,7 @@ fun ConstraintSample() {
                 textAlign = TextAlign.Left,
                 modifier = Modifier.constrainAs(userNameTextRef) {
                     top.linkTo(portraitImageRef.top)
-                    start.linkTo(portraitImageRef.end,10.dp)
+                    start.linkTo(portraitImageRef.end, 10.dp)
                 })
 
             Text(
@@ -146,7 +258,7 @@ fun ConstraintSample() {
                 modifier = Modifier.constrainAs(desTextRef) {
 
                     top.linkTo(userNameTextRef.bottom, 5.dp)
-                    start.linkTo(portraitImageRef.end,10.dp)
+                    start.linkTo(portraitImageRef.end, 10.dp)
                 })
 
 
@@ -178,13 +290,15 @@ fun ConstraintSample() {
 //                maxLines = 2,
 //                overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Left,
-                modifier = Modifier.constrainAs(userNameTextRef) {
-                    top.linkTo(portraitImageRef.top)
-                    start.linkTo(portraitImageRef.end,10.dp)
-                    end.linkTo(parent.end, 10.dp)
-                    //preferred 推断:
-                    width = Dimension.preferredWrapContent
-                }.background(Color.Blue))
+                modifier = Modifier
+                    .constrainAs(userNameTextRef) {
+                        top.linkTo(portraitImageRef.top)
+                        start.linkTo(portraitImageRef.end, 10.dp)
+                        end.linkTo(parent.end, 10.dp)
+                        //preferred 推断:
+                        width = Dimension.preferredWrapContent
+                    }
+                    .background(Color.Blue))
 
             Text(
                 text = "我的个人描述......",
@@ -194,7 +308,7 @@ fun ConstraintSample() {
                 modifier = Modifier.constrainAs(desTextRef) {
 
                     top.linkTo(userNameTextRef.bottom, 5.dp)
-                    start.linkTo(portraitImageRef.end,10.dp)
+                    start.linkTo(portraitImageRef.end, 10.dp)
                 })
 
 
