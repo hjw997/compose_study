@@ -50,6 +50,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.example.chapter02_03_layout.ui.theme.JetpackComposeBookTheme
@@ -75,19 +76,83 @@ class MainActivity : ComponentActivity() {
                     // SpacerSample()
                     //ConstraintSample()
                     //InputFieldLayoutDemo()
-                    UserPortraitDemo()
+                    //UserPortraitDemo()
+                    QuotesDemo()
                 }
             }
         }
     }
 }
 
+/**
+ * Chain 链接约束：
+ * 建议：看下约束布局的 Chain 功能。
+ */
+
+@Composable
+fun QuotesDemo() {
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Gray)
+    ) {
+        val (quotesFirstLineRef, quotesSecondLineRef, quotesThirdLineRef, quotesForthLineRef) = remember { createRefs() }
+
+        ///创建一个链条：参数二是链条的样式。
+        createVerticalChain(quotesFirstLineRef, quotesSecondLineRef, quotesThirdLineRef, quotesForthLineRef, chainStyle = ChainStyle.Spread)
+
+        Text(
+            text = "寄蜉蝣于天地，",
+            color = Color.White,
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.constrainAs(quotesFirstLineRef) {
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }
+        )
+        Text(
+            text = "渺沧海之一粟。",
+            color = Color.White,
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.constrainAs(quotesSecondLineRef) {
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }.background(Color.Red)
+        )
+
+        Text(
+            text = "哀吾生之须臾，",
+            color = Color.White,
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.constrainAs(quotesThirdLineRef) {
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }
+        )
+        Text(
+            text = "羡长江之无穷。",
+            color = Color.White,
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.constrainAs(quotesForthLineRef) {
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }
+        )
+    }
+}
 
 
 @Composable
 fun UserPortraitDemo() {
     Column {
-        Box(modifier = Modifier.height(500.dp).padding(top = 50.dp).fillMaxWidth()) {
+        Box(modifier = Modifier
+            .height(500.dp)
+            .padding(top = 50.dp)
+            .fillMaxWidth()) {
 
             ConstraintLayout(
                 modifier = Modifier
@@ -124,11 +189,13 @@ fun UserPortraitDemo() {
                     text = "Compose 技术爱好者+Compose 技术爱好者",
                     color = Color.White,
                     fontSize = 26.sp,
-                    modifier = Modifier.constrainAs(welcomeRef) {
-                        top.linkTo(userPortraitImgRef.bottom, 20.dp)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }.background(Color.Red)
+                    modifier = Modifier
+                        .constrainAs(welcomeRef) {
+                            top.linkTo(userPortraitImgRef.bottom, 20.dp)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        }
+                        .background(Color.Red)
                 )
             }
         }
