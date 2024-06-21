@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -39,6 +40,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -72,12 +74,67 @@ class MainActivity : ComponentActivity() {
                     // SurfaceSample()
                     // SpacerSample()
                     //ConstraintSample()
-                    InputFieldLayoutDemo()
+                    //InputFieldLayoutDemo()
+                    UserPortraitDemo()
                 }
             }
         }
     }
 }
+
+
+
+@Composable
+fun UserPortraitDemo() {
+    Column {
+        Box(modifier = Modifier.height(500.dp).padding(top = 50.dp).fillMaxWidth()) {
+
+            ConstraintLayout(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.LightGray),
+            ) {
+                var (userPortraitBackgroundRef, userPortraitImgRef, welcomeRef, quotesRef) = remember { createRefs() }
+                var guideLine = createGuidelineFromTop(0.3f)
+
+                Box(modifier = Modifier
+                    .constrainAs(userPortraitBackgroundRef) {
+                        top.linkTo(parent.top)
+                        bottom.linkTo(guideLine)
+                        height = Dimension.fillToConstraints
+                        width = Dimension.matchParent
+                    }
+                    .background(Color(0xFF1E9FFF))
+                )
+
+                Image(painter = painterResource(id = R.drawable.pic),
+                    contentDescription = "portrait",
+                    modifier = Modifier
+                        .constrainAs(userPortraitImgRef) {
+                            top.linkTo(guideLine)
+                            bottom.linkTo(guideLine)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        }
+                        .size(100.dp)
+                        .clip(CircleShape)
+                        .border(width = 2.dp, color = Color(0xFF5FB878), shape = CircleShape))
+
+                Text(
+                    text = "Compose 技术爱好者+Compose 技术爱好者",
+                    color = Color.White,
+                    fontSize = 26.sp,
+                    modifier = Modifier.constrainAs(welcomeRef) {
+                        top.linkTo(userPortraitImgRef.bottom, 20.dp)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }.background(Color.Red)
+                )
+            }
+        }
+    }
+}
+
 
 /**
  * Barrier 分界线：
@@ -185,6 +242,8 @@ fun InputFieldLayoutDemo() {
         }
     }
 }
+
+
 
 
 /**
