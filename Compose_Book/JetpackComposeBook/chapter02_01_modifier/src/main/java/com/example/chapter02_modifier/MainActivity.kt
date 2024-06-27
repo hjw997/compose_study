@@ -31,6 +31,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.chapter02_modifier.modifier_expert.MainLayout01
+import com.example.chapter02_modifier.modifier_expert.MainLayout02
+import com.example.chapter02_modifier.modifier_expert.MainLayout03
+import com.example.chapter02_modifier.modifier_expert.WeightModifierDemo
 import com.example.chapter02_modifier.ui.theme.JetpackComposeBookTheme
 
 class MainActivity : ComponentActivity() {
@@ -43,172 +47,31 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //MainLayout01()
-                    //MainLayout02()
-                    //MainLayout03()
-                    WeightModifierDemo()
+                   //ComposeBookModifierTest()
+
+
                 }
             }
         }
     }
 }
 
+
 /**
- * Modifier:
- * 01:
- * size background fillMaxXXXX
- *
+ * 1.ComposeBook 上的Demo 演示：
  */
 @Composable
-fun MainLayout01() {
-    Column {
-        //1.size
-        Row {
-            Image(
-                painter = painterResource(id = R.drawable.pic),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(60.dp) //设置被修饰的组件的大小为 60x60
-                    .clip(CircleShape) //将图片设置为圆形
-            )
-            Spacer(modifier = Modifier.width(10.dp))
-            Image(
-                painter = painterResource(id = R.drawable.pic),
-                contentDescription = null,
-                modifier = Modifier.size(100.dp, 120.dp)
-            )
-        }
-        ///2.background
-        Row {
-            Box(
-                modifier = Modifier
-                    .size(50.dp)
-                    .background(color = Color.Red)
-            ) {
-                Text(text = "纯色", modifier = Modifier.align(Alignment.Center))
-            }
-
-            Spacer(Modifier.width(10.dp))
-
-            /// Brush 是 Compose 提供的用来创建线性渐变色的工具.
-            val verticalGradientBrush =
-                Brush.verticalGradient(colors = listOf(Color.Red, Color.Yellow, Color.Blue))
-            Box(
-                Modifier
-                    .size(100.dp)
-                    .background(brush = verticalGradientBrush)
-            ) {
-                Text(text = "渐变色", modifier = Modifier.align(Alignment.Center))
-            }
-        }
-
-        Spacer(modifier = Modifier.height(10.dp))
-        //3.fillMaxSize
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Red)
-            )
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp)
-                .background(Color.Gray)
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(40.dp)
-                    .background(Color.Blue)
-            )
-        }
-
-
-    }
+fun ComposeBookModifierTest() {
+    MainLayout01()
+    MainLayout02()
+    MainLayout03()
+    WeightModifierDemo()
 }
 
 /**
- * Modifier:
- * 02:
- * border padding
+ * 2. 扔物线课堂演示代码演练。
  */
 @Composable
-fun MainLayout02() {
-    Box(
-        modifier = Modifier
-            .padding(30.dp) ///外边距 --相当与 margin
-            .border(2.dp, color = Color.Cyan, shape = RoundedCornerShape(10.dp)) //边框
-            .padding(20.dp) //内边距
-    ) {
-        Spacer(
-            modifier = Modifier
-                .size(100.dp, 50.dp)
-                .background(Color.Blue)
-        )
-    }
+fun ComposeModifierRengwuxianCouser() {
+
 }
-
-@Composable
-fun MainLayout03() {
-    Column {
-        Box(
-            modifier = Modifier
-                .size(100.dp)
-                .offset(200.dp, 150.dp)
-                //offset { IntOffset(150,150) }
-                .background(Color.Green)
-        ) {
-
-        }
-    }
-}
-
-@Composable
-fun WeightModifierDemo() {
-    Box(modifier = Modifier) {
-        Column(
-            modifier = Modifier
-                .width(300.dp)
-                .height(200.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .background(Color.Blue)
-            ){}
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .background(Color.Red)
-            )
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .background(Color.Gray)
-            )
-        }
-    }
-}
-
-
-@Composable
-fun MainLayoutTestScope() {
-//    Text(text = "abc",Modifier.align(Alignment.CenterVertically))
-//    Row {
-//        Text(text = "abc",Modifier.align(Alignment.CenterVertically))
-//        Column {
-//            Text(text = "abc",Modifier.align(Alignment.CenterVertically))
-//            Text(text = "abc",Modifier.align(Alignment.CenterHorizontally))
-//        }
-//    }
-}
-
