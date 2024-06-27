@@ -34,23 +34,23 @@ import androidx.compose.ui.unit.dp
 import com.example.chapter02_modifier.modifier_expert.MainLayout01
 import com.example.chapter02_modifier.modifier_expert.MainLayout02
 import com.example.chapter02_modifier.modifier_expert.MainLayout03
+import com.example.chapter02_modifier.modifier_expert.ModifierCourse01
 import com.example.chapter02_modifier.modifier_expert.WeightModifierDemo
 import com.example.chapter02_modifier.ui.theme.JetpackComposeBookTheme
 
 class MainActivity : ComponentActivity() {
+
+    /// 平时我们给一个类声明半生对象：
+    companion object {
+        const val TAG:String = "TAG"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             JetpackComposeBookTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                   //ComposeBookModifierTest()
-
-
-                }
+                //ComposeBookModifierTest()
+                ComposeModifierRengwuxianCouser()
             }
         }
     }
@@ -73,5 +73,5 @@ fun ComposeBookModifierTest() {
  */
 @Composable
 fun ComposeModifierRengwuxianCouser() {
-
+    ModifierCourse01()
 }
