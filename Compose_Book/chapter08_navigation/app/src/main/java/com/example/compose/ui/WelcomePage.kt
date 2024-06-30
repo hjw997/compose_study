@@ -31,6 +31,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.compose.R
 import com.example.compose.ui.theme.*
 
@@ -67,13 +68,15 @@ fun WelcomeTitle() {
 
 @Preview(showBackground = true)
 @Composable
-fun WelcomeButtons() {
+fun WelcomeButtons(loginCallBack:() -> Unit = {}, createAccountCallBack:() -> Unit = {}) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ){
         Button(
-            onClick = { },
+            onClick = {
+                createAccountCallBack() ///事件向上传递。
+            },
             modifier = Modifier
                 .height(48.dp)
                 .padding(horizontal = 16.dp)
@@ -89,7 +92,9 @@ fun WelcomeButtons() {
         }
         Spacer(modifier = Modifier.height(24.dp))
         TextButton(
-            onClick = { },
+            onClick = {
+                loginCallBack() ///事件向上传递。
+            },
         ) {
             Text(
                 text = "Log in",
@@ -114,7 +119,7 @@ fun LeafImage() {
 
 @Preview(showBackground = true)
 @Composable
-fun WelcomeContent() {
+fun WelcomeContent(loginCallBack:() -> Unit = {}, createAccountCallBack:() -> Unit = {}) {
     Column(modifier = Modifier
         .fillMaxSize()
     ) {
@@ -123,12 +128,12 @@ fun WelcomeContent() {
         Spacer(modifier = Modifier.height(48.dp))
         WelcomeTitle()
         Spacer(modifier = Modifier.height(40.dp))
-        WelcomeButtons()
+        WelcomeButtons(loginCallBack, createAccountCallBack)
     }
 }
 
 @Composable
-fun WelcomePage() {
+fun WelcomePage(nvaController: NavController?) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -139,7 +144,27 @@ fun WelcomePage() {
             contentDescription = "weclome_bg",
             modifier = Modifier.fillMaxSize()
         )
-        WelcomeContent()
+        WelcomeContent(
+            loginCallBack = {
+                nvaController?.navigate("login")
+            },
+            createAccountCallBack = {
+                ///假如登录进去了，到了主页就没有回退栈了。 如下操作。 在导航的时候添加一个 block 闭包，对NavOption 操作。
+                nvaController?.navigate("home"){
+                    //清空当前栈顶到节点”welcome“之间的所有节点（包含节点”welcome“本身）
+                    popUpTo("welcome"){
+                        inclusive = true
+                    }
+                }
+            }
+        )
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewWelcomePage() {
+
+}
+
 
