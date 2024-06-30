@@ -41,3 +41,12 @@ fun CustomTest01(modifier: Modifier = Modifier) { ///可以给它一个默认的
 
     }
 }
+
+@Composable
+fun ModifierCourse02() {
+    /// Modifier 是 如何链接在一起的
+    Modifier
+        .padding(8.dp)
+        .background(Color.Red)
+
+}
