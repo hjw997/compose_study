@@ -20,11 +20,19 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.compose.CustomModifierAndLayout.MyCustomRowLayout
+import com.example.compose.CustomModifierAndLayout.TestFirstBaseline
 import com.example.compose.ui.HomePage
 import com.example.compose.ui.LoginPage
 import com.example.compose.ui.WelcomePage
@@ -37,10 +45,28 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            WelcomePage()
+            //WelcomePage()
+            
+            //使用自定义布局
+            //TestMyRow()
+            TestFirstBaseline()
+
         }
     }
 }
+
+@Composable
+fun TestMyRow() {
+    Box {
+        MyCustomRowLayout(modifier = Modifier
+            .background(Color.Red)
+            .wrapContentHeight()) {
+            Text(text = "Hello")
+            Text(text = "World")
+        }
+    }
+}
+
 
 @Preview
 @Composable
@@ -58,4 +84,11 @@ fun LoginPageLightPreview() {
 @Composable
 fun HomePageLightPreview() {
     HomePage()
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun TestMyRowPreview() {
+    TestMyRow()
 }
